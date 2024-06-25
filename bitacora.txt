@@ -1,0 +1,27 @@
+train_LR.py:
+
+PS D:\Angelo\Documents\PLN\Proyecto> & C:/Users/angel/AppData/Local/Programs/Python/Python312/python.exe d:/Angelo/Documents/PLN/Proyecto/train_LR.py
+              precision    recall  f1-score   support
+
+     suicida       0.94      0.92      0.93      8248
+  no_suicida       0.92      0.93      0.93      7752
+
+    accuracy                           0.93     16000
+   macro avg       0.93      0.93      0.93     16000
+weighted avg       0.93      0.93      0.93     16000
+
+
+
+
+train_BERT.py:
+
+100%|█████████████████████████████████████████████████████████████████████████████████████████████| 200/200 [11:44<00:00,  3.52s/it]
+100%|███████████████████████████████████████████████████████████████████████████████████████████████| 13/13 [00:14<00:00,  1.09s/it]
+              precision    recall  f1-score   support
+
+     suicida       0.80      0.92      0.85        86
+  no_suicida       0.93      0.82      0.87       114
+
+    accuracy                           0.86       200
+   macro avg       0.86      0.87      0.86       200
+weighted avg       0.87      0.86      0.87       200
