@@ -12,4 +12,6 @@ results/checkpoint-743/rng_state.pth
 results/checkpoint-743/scheduler.pt
 results/checkpoint-743/trainer_state.json
 results/checkpoint-743/training_args.bin
-
+trained_model/config.json
+trained_model/model.safetensors
+trained_model/training_args.bin
