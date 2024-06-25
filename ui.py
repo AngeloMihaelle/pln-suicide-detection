@@ -1,6 +1,9 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import messagebox
 from PIL import Image, ImageTk
+
+# importar el uso del modelo
+from load_and_predict import classify_single_text
 
 class MyWindow:
     def __init__(self, root):
@@ -38,7 +41,7 @@ class MyWindow:
 
     def show_image_in_sidebar(self):
         # Ruta de la imagen y tamaño máximo
-        image_path = "PLN_Proyecto/pato_Angello.jpg"  # Reemplaza con la ruta de tu imagen
+        image_path = "./PLN_Proyecto/pato_Angello.jpg"  # Reemplaza con la ruta de tu imagen
         image = Image.open(image_path)
         image = image.resize((150, 150))  # Redimensionar la imagen a 10x10 píxeles
         image_photo = ImageTk.PhotoImage(image)
@@ -73,31 +76,65 @@ class MyWindow:
 
         # Mostrar sección de Classify
         classify_title = tk.Label(self.contenido, text="Classify", font=self.title_font, bg="#F5E2DC")
-        classify_title.pack(pady=10)
+        classify_title.pack(pady=5)
 
         text_label = tk.Label(self.contenido, text="Insert or write a text to classify:", font=self.normal_font, bg="#F5E2DC")
-        text_label.pack(pady=10)
+        text_label.pack(pady=5)
 
-        self.text_area = tk.Text(self.contenido, height=5, wrap="word")
-        self.text_area.pack(pady=10, padx=5, fill="both", expand=True)
+        self.text_area = tk.Text(self.contenido, height=7, wrap="word")
+        self.text_area.pack(pady=5, padx=5, fill="both", expand=True)
 
         classify_button = tk.Button(self.contenido, text="Classify", font=self.normal_font, bg="#343A47", fg="white", command=self.classify_text)
-        classify_button.pack(pady=10)
+        classify_button.pack(pady=5)
 
         classification_label = tk.Label(self.contenido, text="Classification:", font=self.normal_font, bg="#F5E2DC")
-        classification_label.pack(pady=10)
+        classification_label.pack(pady=5)
 
-        self.result_area = tk.Text(self.contenido, height=5, wrap="word")
-        self.result_area.pack(pady=10, padx=5, fill="both", expand=True)
+        self.result_area = tk.Text(self.contenido, height=4, wrap="word")
+        self.result_area.pack(pady=5, padx=5, fill="both", expand=True)
 
     def classify_text(self):
         # Obtiene el texto del text area
         text_to_classify = self.text_area.get("1.0", "end-1c")
+        # Usamos el modelo para predecir
+        OUTPUT_DIR = './trained_model'  # Path to the directory containing the fine-tuned model
+        predicted_label = classify_single_text(text_to_classify, model_path=OUTPUT_DIR)
+        print(f"Predicted label from model: {predicted_label}")
+        classification_result = self.classify_logic(predicted_label)
+        
+        # Versión final para mostrar
+        final = ""
+        if len(text_to_classify) <= 100:
+            # Si el texto es menor o igual a 100 caracteres, imprímelo completo con un punto final.
+            print(text_to_classify + '.')
+            final = text_to_classify + '.'
+        else:
+            # Si el texto es mayor a 100 caracteres, recórtalo hasta el 100º caracter y agrega '...'
+            print(text_to_classify[:100] + '...')
+            final = text_to_classify[:100] + '...'
 
-        # Aquí deberías implementar la lógica para clasificar el texto
-        # En este ejemplo, simplemente mostramos el texto clasificado en el result_area
+
+        # Formatea el texto a mostrar
+        formatted_text = (
+            f"Texto Clasificado:\n"
+            f"{final}\n\n"
+            f"Clasificación:\n"
+            f"{classification_result}"
+        )
+
+        # Mostrar el texto formateado en el result_area
         self.result_area.delete("1.0", "end")
-        self.result_area.insert("1.0", f"Texto clasificado:\n{text_to_classify}")
+        self.result_area.insert("1.0", formatted_text)
+
+    def classify_logic(self, text):
+        """
+        Dar formarto a la respuesta de la clasificación
+        """
+        
+        if text.lower() == "suicida":
+            return "El texto proporcionado muestra la presencia de tendencias suicidas."
+        else:
+            return "El texto proporcionado no muestra la presencia de tendencias suicidas."
 
     def clear_content(self):
         # Limpiar todos los widgets del contenido
