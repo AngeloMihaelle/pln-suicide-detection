@@ -180,7 +180,7 @@ Este proyecto trata información sensible relacionada con la salud mental. Su us
 
 ## 👤 Autor
 
-Desarrollado por **Angelo Ojeda \*\* y \*\*Laura Estrada** como parte de un proyecto de PLN.
+Desarrollado por **Angelo Ojeda** y **Laura Estrada** como parte de un proyecto de PLN.
 
 ---
 
